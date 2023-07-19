@@ -24,3 +24,71 @@ jobs:
       id-token: write   # to verify the deployment originates from an appropriate source
     steps:
       - uses: TinyTapeout/tt-gds-action/viewer@tt04
+
+
+##############################################################
+# GateLevel sim
+  gatelevel:
+    needs: gds
+    env:
+        OPENLANE_TAG:		2023.06.26
+        OPENLANE_IMAGE_NAME:	efabless/openlane:3bc9d02d0b34ad032921553e512fbe4bebf1d833-amd64
+        OPENLANE_ROOT:		/home/runner/openlane
+        PDK_ROOT:		/home/runner/pdk
+        PDK:			sky130A
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+      with:
+        submodules: recursive
+
+    #- name: restore runs cache
+    #  uses: actions/cache@v3
+    #  with:
+    #    path: runs
+    #    key: ${{ runner.os }}-runs-${{ github.run_id }}
+
+    #- name: restore pdk cache for the primitives needed for GL verification
+    #  uses: actions/cache@v3
+    #  with:
+    #    path: ${{ env.PDK_ROOT }}
+    #    key: ${{ runner.os }}-pdk-${{ github.run_id }}
+
+    - name: 'download artifact: GDS_logs'
+      uses: actions/download-artifact@v3
+      with:
+        name: GDS_logs
+        path: '.'
+
+    # install oss fpga tools for iVerilog
+    - name: install oss-cad-suite
+      uses: YosysHQ/setup-oss-cad-suite@v2
+      with:
+          python-override: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+    - run: |
+        yosys --version
+        iverilog -V
+        cocotb-config --libpython
+        cocotb-config --python-bin
+
+    - name: test
+      run: |
+        pwd
+        rm -f runs/wokwi/results/final/verilog/gl/*.nl.v
+        cp runs/wokwi/results/final/verilog/gl/*.v src/gate_level_netlist.v
+        cd src
+        make clean
+        GATES=yes make
+        # make will return success even if the test fails, so check for failure in the results.xml
+        ! grep failure results.xml
+
+    - name: upload vcd
+      if: success() || failure()
+      uses: actions/upload-artifact@v3
+      with:
+          name: gatelevel-test-vcd
+          path: |
+            src/*.vcd
+
