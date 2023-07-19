@@ -28,8 +28,9 @@ module tb ();
     wire ena;
 
     // instantiate the DUT with lower MAX_COUNT for a faster sim
-    tt_um_seven_segment_seconds #(
+    tt_um_seven_segment_seconds
 `ifndef GL_TEST
+    #(
             // module parameters do not exist in post-implementation simulation,
             // since the final quantity and configuration of the gates and primitives
             // has been resolved and the verilog module is no longer parameterizable.
@@ -37,8 +38,9 @@ module tb ();
             // With this project this smaller value only exists to speed up
             // pre-synthesis simulation
             .MAX_COUNT(1000)
+    )
 `endif
-    ) tt_um_seven_segment_seconds (
+    tt_um_seven_segment_seconds (
 `ifdef GL_TEST
         .VPWR       ( 1'b1),
         .VGND       ( 1'b0),
