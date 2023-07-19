@@ -21,7 +21,8 @@ async def test_7seg(dut):
     dut.rst_n.value = 1
 
     # We use 1000 to speed up simulation
-    CYCLES_PER_SEGMENT = 10_000_000 if(GL_TEST) else 1000
+    #CYCLES_PER_SEGMENT = 10_000_000 if(GL_TEST) else 1000
+    CYCLES_PER_SEGMENT = 1000 if(GL_TEST) else 1000
 
     dut._log.info("check all segments")
     for i in range(10):
