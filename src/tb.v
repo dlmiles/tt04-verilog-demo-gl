@@ -39,10 +39,14 @@ module tb ();
             .MAX_COUNT(1000)
 `endif
     ) tt_um_seven_segment_seconds (
-        `ifdef GL_TEST
-            .vccd1( 1'b1),
-            .vssd1( 1'b0),
-        `endif
+`ifdef GL_TEST
+        .VPWR       ( 1'b1),
+        .VGND       ( 1'b0),
+`endif
+`ifdef GL_TEST_LEGACY
+        .vccd1      ( 1'b1),
+        .vssd1      ( 1'b0),
+`endif
         .ui_in      (ui_in),    // Dedicated inputs
         .uo_out     (uo_out),   // Dedicated outputs
         .uio_in     (uio_in),   // IOs: Input path
