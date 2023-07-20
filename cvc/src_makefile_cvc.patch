@@ -1,0 +1,44 @@
+diff --git a/src/makefile.cvc b/src/makefile.cvc
+index 46d5318..89fc5b4 100644
+--- a/src/makefile.cvc
++++ b/src/makefile.cvc
+@@ -133,12 +133,17 @@ cvc64:	$(MAINOBJ) $(OBJS) hexasm cvclib_str.o exe_main_str.o
+ 
+ # hexasm just takes an object file and dumps it as a long value array
+ # create the object files and then create the .s files
+-hexasm:	hexasm.o exe_main.o 
++
++cvclib.o: $(RT_OBJS)
+ 	$(LD) --relocatable -o cvclib.o $(RT_OBJS) 
+-	hexasm cvclib.o __cvclib 4 > cvclib_str.s
+-	hexasm exe_main.o __exe_main 4 > exe_main_str.s
+ 
+-hexasm.o:
++cvclib_str.s:	hexasm cvclib.o
++	./hexasm cvclib.o __cvclib 4 > cvclib_str.s
++
++exe_main_str.s: hexasm exe_main.o
++	./hexasm exe_main.o __exe_main 4 > exe_main_str.s
++
++hexasm:
+ 	$(CC) hexasm.c -o hexasm
+ 
+ 
+@@ -251,7 +256,7 @@ v_vpi3.o:	v_vpi3.c
+ 	$(CC) $(CFLAGS) -c v_vpi3.c 
+ 
+ v_dpi.o:	v_dpi.c
+-	$(CC) $(CFLAGS) -c v_dpi.c 
++	$(CC) $(CFLAGS) -c v_dpi.c -D ASM_CC="\"\$(CC)\""
+ 
+ v_acc.o:	v_acc.c
+ 	$(CC) $(CFLAGS) -c v_acc.c 
+@@ -275,7 +280,7 @@ v_cvcms.o:	v_cvcms.c igen.h
+ 	$(CC) $(CFLAGS) -c v_cvcms.c
+ 
+ v_asmlnk.o:	v_asmlnk.c igen.h 
+-	$(CC) $(CFLAGS) -c v_asmlnk.c
++	$(CC) $(CFLAGS) -c v_asmlnk.c  -D ASM_CC="\"\$(CC)\"" -DASM_LIBS="\"$(LIBS)\""
+ 
+ v_cvcrt.o:	v_cvcrt.c igen.h 
+ 	$(CC) $(CFLAGS) -c v_cvcrt.c
