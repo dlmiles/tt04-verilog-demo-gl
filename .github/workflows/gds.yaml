@@ -160,7 +160,7 @@ jobs:
 
         sudo cp -av open-src-cvc/bin/cvc64 /usr/local/bin/
 
-        cvc64 -version
+        cvc64 -version || true
 
     - name: prepare cvc64
       run: |
