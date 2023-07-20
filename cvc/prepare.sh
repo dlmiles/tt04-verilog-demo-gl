@@ -6,7 +6,7 @@ basedir=$(pwd)
 workdir=$(dirname "$0")
 projectdir="$workdir/.."
 
-test -n "$RUNDIR" 	|| RUNDIR="$GITHUB_WORK/runs"
+test -n "$RUNDIR" 	|| RUNDIR="$GITHUB_WORKSPACE/runs"
 test -n "$SDFDIR" 	|| SDFDIR="$RUNDIR/wokwi/results/final/sdf"
 test -n "$TOPLEVEL"	|| TOPLEVEL="dut"
 
