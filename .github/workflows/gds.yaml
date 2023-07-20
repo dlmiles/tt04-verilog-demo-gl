@@ -157,7 +157,8 @@ jobs:
     - name: build cvc64
       run: |
         sudo ./cvc/build.sh
-        sudo cp -av cvc/open-src-cvc/bin/cvc64 /usr/local/bin/
+
+        sudo cp -av open-src-cvc/bin/cvc64 /usr/local/bin/
 
         cvc64 -version
 

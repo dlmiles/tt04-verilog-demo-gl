@@ -2,7 +2,9 @@
 #
 #
 #
-projectdir=$(dirname "$0")/..
+basedir=$(pwd)
+workdir=$(dirname "$0")
+projectdir="$workdir/.."
 
 test -n "$RUNDIR" 	|| RUNDIR="$GITHUB_WORK/runs"
 test -n "$SDFDIR" 	|| SDFDIR="$RUNDIR/wokwi/results/final/sdf"
