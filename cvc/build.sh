@@ -27,12 +27,16 @@ rm -f src/libz.a
 rm -f bin/checkcvc64 bin/checkcvc32 bin/checkcvc
 rm -f chkcvc.src.dir/checkcvc64 chkcvc.src.dir/checkcvc32 chkcvc.src.dir/checkcvc
 
-if [ -f ../src_makefile_cvc.patch ] && ! grep -sq ASM_CC src/makefile.cvc
+if [ -f "${basedir}/cvc/src_makefile_cvc.patch" ] && ! grep -sq ASM_CC src/makefile.cvc
 then
-        patch -p1  < "${basedir}/src_makefile_cvc.patch"
+        patch -p1  < "${basedir}/cvc/src_makefile_cvc.patch"
         echo "PATCH APPLIED: src_makefile_cvc.patch"
 else
         echo "#### WARNING: src_makefile_cvc.patch PATCH NOT APPLIED"
+        echo "basedir=$basedir"
+        ls -lad "${basedir}/cvc"
+        ls -lad src/makefile.cvc
+        [ $with_i386 -eq 0 ] || exit 1
 fi
 
 ######################################################################################################################################
