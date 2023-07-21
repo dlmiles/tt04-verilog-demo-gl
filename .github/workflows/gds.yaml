@@ -142,6 +142,20 @@ jobs:
         name: GDS_logs
         path: '.'
 
+    - name: Install OpenLane
+      shell: bash
+      run: |
+        git clone --depth=1 --branch $OPENLANE_TAG https://github.com/The-OpenROAD-Project/OpenLane.git $OPENLANE_ROOT
+        cd $OPENLANE_ROOT
+
+        curl -s -o ./openlane_2023.06.26.patch "https://raw.githubusercontent.com/dlmiles/tt-gds-action/tt04/openlane_2023.06.26.patch"
+        patch -p1 < ./openlane_2023.06.26.patch
+
+        curl -s -o ./hotfix_pyyaml.sh "https://raw.githubusercontent.com/dlmiles/tt-gds-action/tt04/hotfix_pyyaml.sh"
+        chmod a+x hotfix_pyyaml.sh
+
+        make
+
     # install oss fpga tools for iVerilog
     - name: install oss-cad-suite
       uses: YosysHQ/setup-oss-cad-suite@v2
