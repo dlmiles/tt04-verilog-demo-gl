@@ -204,10 +204,7 @@ jobs:
     - name: test gatelevel
       run: |
         set +e
-        ls -lad $PDK_ROOT
-        ls -lad $PDK_ROOT/$PDK
-        ls -lad $PDK_ROOT/$PDK/libs.ref/sky130_fd_sc_hd/verilog/
-        ls -la  $PDK_ROOT/$PDK/libs.ref/sky130_fd_sc_hd/verilog
+        ls -laR  $PDK_ROOT/$PDK/libs.ref/sky130_fd_sc_hd/verilog
         set -e
 
         pwd
@@ -216,7 +213,7 @@ jobs:
         cd src
         make clean
 
-        GATES=yes SIM=cvc make
+        GATES=cvc SIM=cvc make
 
         cp -v tb.vcd tb_gatelevel.vcd
 

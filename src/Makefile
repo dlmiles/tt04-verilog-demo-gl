@@ -24,6 +24,22 @@ VERILOG_SOURCES += $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_f
 
 # this gets copied in by the GDS action workflow
 VERILOG_SOURCES += $(PWD)/tb.v $(PWD)/gate_level_netlist.v
+
+endif
+
+ifeq ($(GATES),cvc)
+
+#VERILOG_SOURCES += sdf/sdf_annotate.v
+EXTRA_ARGS += +verbose -informs +sdfverbose
+EXTRA_ARGS += +define+GL_TEST +define+FUNCTIONAL +define+USE_POWER_PINS +define+SIM +define+UNIT_DELAY=\#1
+#EXTRA_ARGS += +optionconfgfile+sdf/file.cfg
+
+VERILOG_SOURCES += $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v
+VERILOG_SOURCES += $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v
+
+# this gets copied in by the GDS action workflow
+VERILOG_SOURCES += $(PWD)/tb.v $(PWD)/gate_level_netlist.v
+
 endif
 
 # TOPLEVEL is the name of the toplevel module in your Verilog or VHDL file
