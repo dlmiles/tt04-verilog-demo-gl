@@ -20,6 +20,7 @@ fi
 
 
 # cocotb wanted libffi.so.7 (maybe this is an oss-cad-suite matter for not bundling?)
+# oss-cad-suite should have ./lib/libffi.so.7 maybe LD_LIBRARY_PATH is missing ?
 apt-get install -y libffi7
 
 
