@@ -19,6 +19,10 @@ then
 fi
 
 
+# cocotb wanted libffi.so.7 (maybe this is an oss-cad-suite matter for not bundling?)
+apt-get install -y libffi7
+
+
 git clone https://github.com/cambridgehackers/open-src-cvc
 cd open-src-cvc
 
@@ -104,6 +108,7 @@ cd ../..
 cd tests_and_examples/examples.dpi/
 
 ###
+### FIXME investigate coredump seen here (but no error in test! LOL)
 ### cvc64 -q -sv_lib export.so export.v >/dev/null
 ###
 sed -e 'sX/bin/shX/bin/bashX' -i dpi_tests.sh   # >& use

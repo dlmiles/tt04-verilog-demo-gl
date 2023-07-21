@@ -78,6 +78,8 @@ do
 		) > "${projectdir}/src/sdf/sdf_annotate_${mtmspec}_${corner}.v"
 
 		echo "GENERATED: ${projectdir}/src/sdf/sdf_annotate_${mtmspec}_${corner}.v"
+		echo "=== ${projectdir}/src/sdf/sdf_annotate_${mtmspec}_${corner}.v :"
+		cat "${projectdir}/src/sdf/sdf_annotate_${mtmspec}_${corner}.v"
 	done
 done
 
@@ -97,5 +99,7 @@ then
 	) > "${projectdir}/src/sdf/sdf_annotate.v"
 
 	echo "GENERATED: ${projectdir}/src/sdf/sdf_annotate.v"
+	echo "=== ${projectdir}/src/sdf/sdf_annotate.v :"
+	cat "${projectdir}/src/sdf/sdf_annotate.v"
 fi
 
