@@ -5,15 +5,11 @@
 SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 
-# normal simulation
-ifneq ($(GATES),yes)
+ifeq ($(GATES),yes)
 
-# this is the only part you should need to modify:
-VERILOG_SOURCES += $(PWD)/tb.v $(PWD)/tt_um_seven_segment_seconds.v $(PWD)/decoder.v
-
-else
-
-# gate level simulation requires some extra setup, you shouldn't need to touch this
+###
+### gate level simulation requires some extra setup, you shouldn't need to touch this
+###
 COMPILE_ARGS    += -DGL_TEST
 COMPILE_ARGS    += -DFUNCTIONAL
 COMPILE_ARGS    += -DUSE_POWER_PINS
@@ -25,20 +21,35 @@ VERILOG_SOURCES += $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_f
 # this gets copied in by the GDS action workflow
 VERILOG_SOURCES += $(PWD)/tb.v $(PWD)/gate_level_netlist.v
 
-endif
+else ifeq ($(GATES),cvc)
 
-ifeq ($(GATES),cvc)
-
+###
+### gate level CVC simulation
+###
 #VERILOG_SOURCES += sdf/sdf_annotate.v
-EXTRA_ARGS += +verbose -informs +sdfverbose
-EXTRA_ARGS += +define+GL_TEST +define+FUNCTIONAL +define+USE_POWER_PINS +define+SIM +define+UNIT_DELAY=\#1
-#EXTRA_ARGS += +optionconfgfile+sdf/file.cfg
+EXTRA_ARGS	+= +verbose -informs +sdfverbose
+
+EXTRA_ARGS	+= +define+GL_TEST
+EXTRA_ARGS	+= +define+FUNCTIONAL
+EXTRA_ARGS	+= +define+USE_POWER_PINS
+EXTRA_ARGS	+= +define+SIM
+EXTRA_ARGS	+= +define+UNIT_DELAY=\#1
+#EXTRA_ARGS	+= +optionconfgfile+sdf/file.cfg
 
 VERILOG_SOURCES += $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v
 VERILOG_SOURCES += $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v
 
 # this gets copied in by the GDS action workflow
 VERILOG_SOURCES += $(PWD)/tb.v $(PWD)/gate_level_netlist.v
+
+else
+
+###
+### normal simulation
+###
+
+# this is the only part you should need to modify:
+VERILOG_SOURCES += $(PWD)/tb.v $(PWD)/tt_um_seven_segment_seconds.v $(PWD)/decoder.v
 
 endif
 
