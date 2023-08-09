@@ -25,10 +25,10 @@ module seg7 (
             3:  segments = 7'b1001111;
             4:  segments = 7'b1100110;
             5:  segments = 7'b1101101;
-            6:  segments = 7'b1111100;
-            7:  segments = 7'b0000111;
+            6:  segments = 7'b1111101;
+            7:  segments = 7'b0100111;
             8:  segments = 7'b1111111;
-            9:  segments = 7'b1100111;
+            9:  segments = 7'b1101111;
             default:    
                 segments = 7'b0000000;
         endcase
